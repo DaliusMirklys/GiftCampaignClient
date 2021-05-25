@@ -1,0 +1,153 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.App {
+  text-align: center;
+  margin-top: 50px;
+  box-sizing: border-box;
+}
+.Backdrop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.AuthBox {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  height: auto;
+  margin: 20px auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  box-shadow: 2px 3px 10px #eee;
+  text-align: center;
+  &__ButtonBox {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  &__InputBox {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  @media (min-width: 600px) {
+    width: 400px;
+  }
+}
+.ContentBox {
+  width: 90%;
+  margin: 1rem auto;
+  background-color: #eee;
+  padding: 1rem 0;
+  @media (max-width: 550px) {
+    width: 100%;
+  }
+}
+.Overview {
+  @media (min-width: 550px) {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  .item {
+    font-size: 0.7rem;
+    width: 80%;
+    height: 3rem;
+    margin: 1rem auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    align-items: center;
+    background-color: #7fdbff;
+    color: #fff;
+    border-radius: 0.5rem;
+    @media (min-width: 550px) {
+      width: 30%;
+      height: 150px;
+      margin: 1rem;
+      flex-direction: column;
+      padding: 0;
+      h1 {
+        font-size: 2.5rem;
+        margin-top: 0;
+      }
+    }
+    @media (min-width: 750px) {
+      margin: 1rem 4rem;
+    }
+    @media (min-width: 1000px) {
+      margin: 1rem;
+      width: 20%;
+    }
+  }
+}
+
+#DisplayNone650 {
+  @media (max-width: 650px) {
+    display: none;
+  }
+}
+#DisplayNone500 {
+  @media (max-width: 500px) {
+    display: none;
+  }
+}
+
+.Modal {
+  position: fixed;
+  width: 80%;
+  top: 30%;
+  left: 10%;
+  z-index: 500;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px black;
+  padding: 16px;
+  box-sizing: border-box;
+  transition: all 0.3s ease-out;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+  }
+  @media (min-width: 500px) {
+    width: 400px;
+    left: calc(50% - 200px);
+  }
+}
+.Toolbar {
+  width: 90%;
+  height: 50px;
+  top: 0;
+  left: 5%;
+  position: fixed;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-bottom: 1px solid #bbb;
+  background-color: #ddd;
+  z-index: 100;
+  @media (max-width: 550px) {
+    width: 100%;
+    left: 0;
+  }
+}
+.ListHeaders {
+  display: flex;
+  justify-content: space-evenly;
+}
