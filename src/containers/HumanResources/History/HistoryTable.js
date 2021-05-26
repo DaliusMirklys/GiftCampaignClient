@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import Table from '@material-ui/core/Table';
@@ -8,15 +7,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { IconButton } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import { materialStyles } from '../../../utils/styles/materialStyles';
-import { PictureAsPdf } from '@material-ui/icons';
-
 
 const HistoryTable = props => {
   const classes = materialStyles();
@@ -27,19 +23,15 @@ const HistoryTable = props => {
           <TableRow>
             <TableCell></TableCell>
             <TableCell align="left">Title</TableCell>
-            <TableCell align="center" id="DisplayNone650">Status</TableCell>
-            <TableCell align="center">
-              Rating
+            <TableCell align="center" id="DisplayNone650">
+              Status
             </TableCell>
-            <TableCell/>
+            <TableCell align="center">Rating</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {props.history?.map(gift => (
-            <Row
-              key={gift.id}
-              gift={gift}
-            />
+            <Row key={gift.id} gift={gift} />
           ))}
         </TableBody>
       </Table>
@@ -54,7 +46,7 @@ const Row = props => {
   return (
     <React.Fragment>
       <TableRow className={classes.tableRow}>
-        <TableCell padding="none">
+        <TableCell>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -66,42 +58,34 @@ const Row = props => {
         <TableCell component="th" scope="row">
           {gift.boxTitle}
         </TableCell>
-        <TableCell component="th" scope="row" align="center" id="DisplayNone650">
+        <TableCell
+          component="th"
+          scope="row"
+          align="center"
+          id="DisplayNone650"
+        >
           {gift.status}
         </TableCell>
         <TableCell align="center" style={{ verticalAlign: 'bottom' }}>
-            {gift.rating ? (
-              <Rating
-                name={gift.id.toString()}
-                precision={0.5}
-                value={gift.rating / 2}
-                readOnly
-              />
-            ) : (
-              'Not rated yet'
-            )}
-        </TableCell>
-        <TableCell align="right">
-            <IconButton
-              size="small"
-            >
-              <PictureAsPdf />
-            </IconButton>
+          {gift.rating ? (
+            <Rating
+              name={gift.id.toString()}
+              precision={0.5}
+              value={gift.rating / 2}
+              readOnly
+            />
+          ) : (
+            'Not rated yet'
+          )}
         </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant="p" gutterBottom component="div">
-                Name: {gift.recipient.name}
-              </Typography>
-              <Typography variant="p" gutterBottom component="div">
-                Address: {gift.recipient.address}
-              </Typography>
-              <Typography variant="p" gutterBottom component="div">
-                Email: {gift.recipient.email}
-              </Typography>
+              <p>Name: {gift.recipient.name}</p>
+              <p>Address: {gift.recipient.address}</p>
+              <p>Email: {gift.recipient.email}</p>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -112,7 +96,7 @@ const Row = props => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {gift.items.map(item => (
+                  {gift?.items.map(item => (
                     <TableRow key={item.id}>
                       <TableCell component="th" scope="row">
                         {item.title}

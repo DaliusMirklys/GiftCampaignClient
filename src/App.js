@@ -19,7 +19,8 @@ const App = () => {
       {isAuth 
       ? <React.Fragment> 
         <Toolbar/>
-        {userRole === 'human_resources' ? <HumanResources/> : <Employee/>}
+        {userRole === 'human_resources' && <HumanResources/>}
+        {userRole === 'employee' && <Employee/>}
       </React.Fragment>
       : <Auth/>}
     </div>

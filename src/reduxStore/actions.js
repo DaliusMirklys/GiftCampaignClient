@@ -43,12 +43,12 @@ export const checkAuthAfterRefresh = () => {
       (new Date(localStorage.getItem('expirationDate')).getTime() -
         new Date().getTime()) /
       1000;
-    if (timeRemainingLogedIn > 0) {
-      const token = localStorage.getItem('token');
-      const name = localStorage.getItem('name');
-      const role = localStorage.getItem('role');
+      if (timeRemainingLogedIn > 0) {
+        const token = localStorage.getItem('token');
+        const name = localStorage.getItem('name');
+        const role = localStorage.getItem('role');
       if (role !== 'human_resources' && role !== 'employee') dispatch(logout());
-      dispatch(setUserData({ data: { token, name, role } }));
+      dispatch(setUserData({ token, name, role }));
       dispatch(setAuthTimeout(timeRemainingLogedIn));
     }
   };

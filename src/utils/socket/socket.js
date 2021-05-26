@@ -1,2 +1,2 @@
 import socketClient from 'socket.io-client';
-export const socket = socketClient('http://localhost:8080')
+export const socket = socketClient('https://gift-campaign.herokuapp.com')
