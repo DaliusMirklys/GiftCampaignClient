@@ -4,14 +4,16 @@ import GiftBoxTable from './GiftBoxTable';
 import SendGiftModal from './SendGiftModal';
 import CreateGiftBoxModal from './CreateGiftBoxModal';
 import { useSelector } from 'react-redux';
+import { socket } from '../../../utils/socket/socket';
 
 const GiftBoxes = () => {
   const [showCreateGiftBoxModal, setShowCreateGiftBoxModal] = useState(false);
   const [showSendGiftModal, setShowSendGiftModal] = useState(false);
   const [giftBoxToSend, setGiftBoxToSend] = useState(null);
   const [giftBoxes, setGiftBoxes] = useState(null);
-  const giftItems = useSelector(state => state.giftItems)
-  const token = useSelector(state => state.userData.token)
+  const giftItems = useSelector(state => state.giftItems);
+  const token = useSelector(state => state.userData.token);
+  socket.on('giftBoxesChanged', () => fetchGiftBoxes());
 
   const fetchGiftBoxes = async () => {
     try {
@@ -51,7 +53,7 @@ const GiftBoxes = () => {
       {showCreateGiftBoxModal ? (
         <CreateGiftBoxModal
           close={() => setShowCreateGiftBoxModal(false)}
-          giftItems = {giftItems}
+          giftItems={giftItems}
           fetchGiftBoxes={fetchGiftBoxes}
         />
       ) : null}
@@ -65,4 +67,4 @@ const GiftBoxes = () => {
   );
 };
 
-export default GiftBoxes
+export default GiftBoxes;

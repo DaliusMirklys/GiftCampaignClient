@@ -14,6 +14,7 @@ import { validationRules } from '../../../utils/validation/validationRules';
 import { materialStyles } from '../../../utils/styles/materialStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchGiftItems } from '../../../reduxStore/actions';
+import { socket } from '../../../utils/socket/socket';
 
 const GiftItemList = props => {
   const classes = materialStyles();
@@ -24,6 +25,7 @@ const GiftItemList = props => {
   const token = useSelector(state => state.userData.token);
   const giftItems = useSelector(state => state.giftItems);
   const dispatch = useDispatch();
+  socket.on('giftItemsChanged', () => dispatch(fetchGiftItems()))
   const toggleCreateGiftItemModal = () => {
     if (showCreateGiftItemModal) {
       setTitle({ value: null, isValid: true });

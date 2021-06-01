@@ -14,12 +14,13 @@ import { IconButton } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import { materialStyles } from '../../utils/styles/materialStyles';
 import { useSelector } from 'react-redux';
+import { socket } from '../../utils/socket/socket';
 
 const ReceivedGifts = () => {
   const classes = materialStyles();
   const token = useSelector(state => state.userData.token);
-
   const [receivedGifts, setReceivedGifts] = useState(null);
+  socket.on('giftDelivered', () => fetchReceivedGifts());
 
   const fetchReceivedGifts = async () => {
     try {

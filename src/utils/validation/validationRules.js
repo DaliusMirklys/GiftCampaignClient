@@ -20,7 +20,8 @@ export const validationRules = {
     return true;
   },
   price: value => {
-    return !isNaN(value);
+    if (isNaN(value) || +value < 1) return false
+    return true
   },
   quantity: value => {
     if (!Number.isInteger(+value) || +value < 1) return false

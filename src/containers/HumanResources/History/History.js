@@ -7,10 +7,7 @@ const History = () => {
   const [history, setHistory] = useState(null);
   const token = useSelector(state => state.userData.token);
   socket.on('giftDelivered', () => fetchHistory());
-  socket.on('connection', (socket) => {
-    console.log('Client connected');
-    socket.on('disconnect', () => console.log('Client disconnected'));
-  });
+  socket.on('giftRated', () => fetchHistory());
   const fetchHistory = async () => {
     try {
       const jsonResponse = await fetch('https://gift-campaign.herokuapp.com/getHistory', {

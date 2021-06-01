@@ -7,8 +7,9 @@ import { socket } from '../../../utils/socket/socket';
 const Overview = () => {
   const gifts = useSelector(state => state.overview)
   const dispatch = useDispatch()
+  socket.on('giftDelivered', () => dispatch(fetchOverview()));
+  socket.on('giftRated', () => dispatch(fetchOverview()));
   useEffect(() => {
-    socket.on('giftDelivered', () => dispatch(fetchOverview()));
     dispatch(fetchOverview());
   }, []);
 
