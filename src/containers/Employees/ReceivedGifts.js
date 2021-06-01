@@ -20,7 +20,6 @@ const ReceivedGifts = () => {
   const classes = materialStyles();
   const token = useSelector(state => state.userData.token);
   const [receivedGifts, setReceivedGifts] = useState(null);
-  socket.on('giftDelivered', () => fetchReceivedGifts());
 
   const fetchReceivedGifts = async () => {
     try {
@@ -59,6 +58,7 @@ const ReceivedGifts = () => {
     }
   };
   useEffect(() => {
+    socket.on('giftDelivered', () => fetchReceivedGifts());
     fetchReceivedGifts();
   }, []);
   return (

@@ -6,8 +6,6 @@ import { socket } from '../../../utils/socket/socket';
 const History = () => {
   const [history, setHistory] = useState(null);
   const token = useSelector(state => state.userData.token);
-  socket.on('giftDelivered', () => fetchHistory());
-  socket.on('giftRated', () => fetchHistory());
   const fetchHistory = async () => {
     try {
       const jsonResponse = await fetch('https://gift-campaign.herokuapp.com/getHistory', {
@@ -23,6 +21,8 @@ const History = () => {
     }
   };
   useEffect(() => {
+    socket.on('giftDelivered', () => fetchHistory());
+    socket.on('giftRated', () => fetchHistory());
     fetchHistory();
   }, []);
 

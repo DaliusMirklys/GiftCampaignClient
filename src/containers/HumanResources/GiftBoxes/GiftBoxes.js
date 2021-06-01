@@ -13,7 +13,6 @@ const GiftBoxes = () => {
   const [giftBoxes, setGiftBoxes] = useState(null);
   const giftItems = useSelector(state => state.giftItems);
   const token = useSelector(state => state.userData.token);
-  socket.on('giftBoxesChanged', () => fetchGiftBoxes());
 
   const fetchGiftBoxes = async () => {
     try {
@@ -30,6 +29,7 @@ const GiftBoxes = () => {
     }
   };
   useEffect(() => {
+    socket.on('giftBoxesChanged', () => fetchGiftBoxes());
     fetchGiftBoxes();
   }, [giftItems]);
 

@@ -25,7 +25,6 @@ const GiftItemList = props => {
   const token = useSelector(state => state.userData.token);
   const giftItems = useSelector(state => state.giftItems);
   const dispatch = useDispatch();
-  socket.on('giftItemsChanged', () => dispatch(fetchGiftItems()))
   const toggleCreateGiftItemModal = () => {
     if (showCreateGiftItemModal) {
       setTitle({ value: null, isValid: true });
@@ -118,6 +117,7 @@ const GiftItemList = props => {
     }
   };
   useEffect(() => {
+    socket.on('giftItemsChanged', () => dispatch(fetchGiftItems()))
     dispatch(fetchGiftItems());
   }, []);
 
