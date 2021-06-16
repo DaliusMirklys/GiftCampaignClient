@@ -8,7 +8,7 @@ import { Box, Button, ButtonGroup, IconButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RemoveIcon from '@material-ui/icons/Remove';
-import { Input } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import Modal from '../../../components/ReusableComponents/Modal';
 import { validationRules } from '../../../utils/validation/validationRules';
 import { materialStyles } from '../../../utils/styles/materialStyles';
@@ -19,41 +19,44 @@ import { socket } from '../../../utils/socket/socket';
 const GiftItemList = props => {
   const classes = materialStyles();
   const [showCreateGiftItemModal, setShowCreateGiftItemModal] = useState(false);
-  const [title, setTitle] = useState({ value: null, isValid: true });
-  const [price, setPrice] = useState({ value: null, isValid: true });
-  const [quantity, setQuantity] = useState({ value: null, isValid: true });
+  const [title, setTitle] = useState({ value: null, isInvalid: false });
+  const [price, setPrice] = useState({ value: null, isInvalid: false });
+  const [quantity, setQuantity] = useState({ value: null, isInvalid: false });
   const token = useSelector(state => state.userData.token);
   const giftItems = useSelector(state => state.giftItems);
   const dispatch = useDispatch();
   const toggleCreateGiftItemModal = () => {
     if (showCreateGiftItemModal) {
-      setTitle({ value: null, isValid: true });
-      setPrice({ value: null, isValid: true });
-      setQuantity({ value: null, isValid: true });
+      setTitle({ value: null, isInvalid: false });
+      setPrice({ value: null, isInvalid: false });
+      setQuantity({ value: null, isInvalid: false });
     }
     setShowCreateGiftItemModal(!showCreateGiftItemModal);
   };
   const createGiftItem = async event => {
     event.preventDefault();
-    if (!title.isValid || !title.value)
+    if (title.isInvalid || !title.value)
       return document.getElementById('title').focus();
-    if (!price.isValid || !price.value)
+    if (price.isInvalid || !price.value)
       return document.getElementById('price').focus();
-    if (!quantity.isValid || !quantity.value)
+    if (quantity.isInvalid || !quantity.value)
       return document.getElementById('quantity').focus();
     try {
-      const jsonResponse = await fetch('https://gift-campaign.herokuapp.com/createGiftItem', {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: title.value,
-          price: price.value,
-          quantity: quantity.value,
-        }),
-      });
+      const jsonResponse = await fetch(
+        'https://gift-campaign.herokuapp.com/createGiftItem',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: title.value,
+            price: price.value,
+            quantity: quantity.value,
+          }),
+        }
+      );
       const response = await jsonResponse.json();
       if (!jsonResponse.ok) throw new Error(response.message);
       toggleCreateGiftItemModal();
@@ -65,7 +68,8 @@ const GiftItemList = props => {
   const deleteGiftItem = async event => {
     try {
       const jsonResponse = await fetch(
-        'https://gift-campaign.herokuapp.com/deleteGiftItem/' + event.currentTarget.id,
+        'https://gift-campaign.herokuapp.com/deleteGiftItem/' +
+          event.currentTarget.id,
         {
           method: 'DELETE',
           headers: {
@@ -83,7 +87,8 @@ const GiftItemList = props => {
   const addQuantity = async event => {
     try {
       const jsonResponse = await fetch(
-        'https://gift-campaign.herokuapp.com/addQuantity/' + event.currentTarget.id,
+        'https://gift-campaign.herokuapp.com/addQuantity/' +
+          event.currentTarget.id,
         {
           method: 'PUT',
           headers: {
@@ -101,7 +106,8 @@ const GiftItemList = props => {
   const subtractQuantity = async event => {
     try {
       const jsonResponse = await fetch(
-        'https://gift-campaign.herokuapp.com/subtractQuantity/' + event.currentTarget.id,
+        'https://gift-campaign.herokuapp.com/subtractQuantity/' +
+          event.currentTarget.id,
         {
           method: 'PUT',
           headers: {
@@ -117,7 +123,7 @@ const GiftItemList = props => {
     }
   };
   useEffect(() => {
-    socket.on('giftItemsChanged', () => dispatch(fetchGiftItems()))
+    socket.on('giftItemsChanged', () => dispatch(fetchGiftItems()));
     dispatch(fetchGiftItems());
   }, []);
 
@@ -179,64 +185,81 @@ const GiftItemList = props => {
         <Modal close={() => toggleCreateGiftItemModal()}>
           <h4>Create gift item</h4>
           <form onSubmit={createGiftItem}>
-            <Input
+            <TextField
               placeholder="Title"
+              variant="outlined"
+              size="small"
+              margin="dense"
+              label="Title"
+              helperText={title.isInvalid ? title.isInvalid.message : null}
               id="title"
-              error={!title.isValid}
+              error={title.isInvalid}
               onBlur={event =>
                 setTitle({
                   ...title,
-                  isValid: validationRules.title(event.target.value),
+                  isInvalid: validationRules.title(event.target.value),
                 })
               }
               onChange={event =>
                 setTitle({
                   value: event.target.value,
-                  isValid: title.isValid
-                    ? true
-                    : validationRules.title(event.target.value),
+                  isInvalid: title.isInvalid
+                    ? validationRules.title(event.target.value)
+                    : false,
                 })
               }
             />
-            <Input
+            <TextField
               placeholder="Price"
+              variant="outlined"
+              size="small"
+              margin="dense"
+              label="Price"
+              helperText={price.isInvalid ? price.isInvalid.message : null}
               id="price"
-              error={!price.isValid}
+              error={price.isInvalid}
               onBlur={event =>
                 setPrice({
                   ...price,
-                  isValid: validationRules.price(event.target.value),
+                  isInvalid: validationRules.price(event.target.value),
                 })
               }
               onChange={event =>
                 setPrice({
                   value: event.target.value,
-                  isValid: price.isValid
-                    ? true
-                    : validationRules.price(event.target.value),
+                  isInvalid: price.isInvalid
+                    ? validationRules.price(event.target.value)
+                    : false,
                 })
               }
             />
-            <Input
+            <TextField
               placeholder="Quantity"
+              variant="outlined"
+              size="small"
+              margin="dense"
+              label="Quantity"
+              helperText={
+                quantity.isInvalid ? quantity.isInvalid.message : null
+              }
               id="quantity"
-              error={!quantity.isValid}
+              error={quantity.isInvalid}
               onBlur={event =>
                 setQuantity({
                   ...quantity,
-                  isValid: validationRules.quantity(event.target.value),
+                  isInvalid: validationRules.quantity(event.target.value),
                 })
               }
               onChange={event =>
                 setQuantity({
                   value: event.target.value,
-                  isValid: quantity.isValid
-                    ? true
-                    : validationRules.quantity(event.target.value),
+                  isInvalid: quantity.isInvalid
+                    ? validationRules.quantity(event.target.value)
+                    : false,
                 })
               }
             />
-            <ButtonGroup className={classes.buttonGroup}>
+            <ButtonGroup className={classes.buttonGroup} padding="small">
               <Button
                 type="submit"
                 color="primary"

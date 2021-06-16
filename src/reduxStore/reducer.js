@@ -38,6 +38,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         overview: action.data,
       };
+    case actionTypes.SET_HISTORY:
+      return {
+        ...state,
+        history: action.data,
+      };
     default:
       return state;
   }

@@ -2,9 +2,9 @@ import React from 'react'
 import ReceivedGifts from './ReceivedGifts'
 
 const Employee = () => (
-        <div className="ContentBox">
+        <React.Fragment>
             <ReceivedGifts/>
-        </div>
+        </React.Fragment>
     )
  
 export default Employee

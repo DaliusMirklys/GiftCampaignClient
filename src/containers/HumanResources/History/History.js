@@ -1,39 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import HistoryTable from './HistoryTable';
 import { socket } from '../../../utils/socket/socket';
+import { fetchHistory } from '../../../reduxStore/actions';
 
 const History = () => {
-  const [history, setHistory] = useState(null);
-  const token = useSelector(state => state.userData.token);
-  const fetchHistory = async () => {
-    try {
-      const jsonResponse = await fetch('https://gift-campaign.herokuapp.com/getHistory', {
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      });
-      const response = await jsonResponse.json();
-      if (!jsonResponse.ok) throw new Error(response.message);
-      setHistory(response);
-    } catch (error) {
-      alert(error);
-    }
-  };
+  const history = useSelector(state => state.history);
+  const dispatch = useDispatch();
   useEffect(() => {
-    socket.on('giftDelivered', () => fetchHistory());
-    socket.on('giftRated', () => fetchHistory());
-    fetchHistory();
+    socket.on('giftDelivered', () => dispatch(fetchHistory()));
+    socket.on('giftRated', () => dispatch(fetchHistory()));
+    dispatch(fetchHistory());
   }, []);
 
   return (
     <div className="ContentBox">
       <h5>History</h5>
-      <HistoryTable
-        history={history}
-      />
+      <HistoryTable history={history} />
     </div>
   );
 };
 
-export default History
+export default History;

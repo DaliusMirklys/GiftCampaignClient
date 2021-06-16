@@ -11,6 +11,15 @@ body {
   margin-top: 50px;
   box-sizing: border-box;
 }
+.ContentBox {
+  width: 90%;
+  margin: 1rem auto;
+  background-color: #eee;
+  padding: 1rem 0;
+  @media (max-width: 550px) {
+    width: 100%;
+  }
+}
 .Backdrop {
   width: 100%;
   height: 100%;
@@ -23,7 +32,7 @@ body {
 .AuthBox {
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 80%;
   height: auto;
   margin: 20px auto;
   padding: 1rem;
@@ -43,17 +52,8 @@ body {
     flex-direction: column;
     justify-content: space-evenly;
   }
-  @media (min-width: 600px) {
+  @media (min-width: 500px) {
     width: 400px;
-  }
-}
-.ContentBox {
-  width: 90%;
-  margin: 1rem auto;
-  background-color: #eee;
-  padding: 1rem 0;
-  @media (max-width: 550px) {
-    width: 100%;
   }
 }
 .Overview {
@@ -109,14 +109,14 @@ body {
 
 .Modal {
   position: fixed;
-  width: 80%;
+  width: 85%;
+  padding: 16px 0;
   top: 30%;
-  left: 10%;
+  left: 7.5%;
   z-index: 500;
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 1px black;
-  padding: 16px;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
   form {
@@ -126,8 +126,8 @@ body {
     margin: 0 auto;
   }
   @media (min-width: 500px) {
-    width: 400px;
-    left: calc(50% - 200px);
+    width: 350px;
+    left: calc(50% - 175px);
   }
 }
 .Toolbar {
@@ -146,8 +146,4 @@ body {
     width: 100%;
     left: 0;
   }
-}
-.ListHeaders {
-  display: flex;
-  justify-content: space-evenly;
 }

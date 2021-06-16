@@ -10,7 +10,7 @@ import {
   TextField,
   OutlinedInput,
 } from '@material-ui/core';
-import { fetchOverview, fetchGiftItems } from '../../../reduxStore/actions';
+import { fetchOverview, fetchGiftItems, fetchHistory } from '../../../reduxStore/actions';
 import { useSelector, useDispatch } from 'react-redux';
 
 const deliveryMethods = [
@@ -65,6 +65,7 @@ const SendGiftModal = props => {
       const response = await jsonResponse.json();
       if (!jsonResponse.ok) throw new Error(response.message);
       dispatch(fetchOverview())
+      dispatch(fetchHistory())
       dispatch(fetchGiftItems())
       props.close();
     } catch (error) {
@@ -120,6 +121,7 @@ const SendGiftModal = props => {
           variant="outlined"
           multiline
           placeholder="Message"
+          label="Message"
           id="addMessage"
         />
         <ButtonGroup className={classes.buttonGroup}>

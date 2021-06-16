@@ -10,21 +10,23 @@ import { checkAuthAfterRefresh } from './reduxStore/actions';
 const App = () => {
   const userRole = useSelector(state => state.userData.role);
   const isAuth = useSelector(state => state.userData.token !== null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
-      dispatch(checkAuthAfterRefresh())
-  }, [])
+    dispatch(checkAuthAfterRefresh());
+  }, []);
   return (
     <div className="App">
-      {isAuth 
-      ? <React.Fragment> 
-        <Toolbar/>
-        {userRole === 'human_resources' && <HumanResources/>}
-        {userRole === 'employee' && <Employee/>}
-      </React.Fragment>
-      : <Auth/>}
+      {isAuth ? (
+        <React.Fragment>
+          <Toolbar />
+          {userRole === 'human_resources' && <HumanResources />}
+          {userRole === 'employee' && <Employee />}
+        </React.Fragment>
+      ) : (
+        <Auth />
+      )}
     </div>
   );
-}
+};
 
 export default App;

@@ -46,7 +46,7 @@ const GiftBoxTable = props => {
             <TableCell align="center" id="DisplayNone650">
               Availability
             </TableCell>
-            <TableCell> </TableCell>
+            <TableCell/>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -89,11 +89,10 @@ const Row = props => {
         <TableCell component="th" scope="row">
           {giftBox.title}
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="center" id="DisplayNone500">
           <Box
             component="fieldset"
             borderColor="transparent"
-            id="DisplayNone500"
           >
             {giftBox.avgRating ? (
               <Rating

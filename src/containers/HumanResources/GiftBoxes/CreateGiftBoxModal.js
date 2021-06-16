@@ -26,19 +26,19 @@ const CreateGiftBoxModal = props => {
   const classes = materialStyles();
   const [giftBoxTitle, setGiftBoxTitle] = useState({
     value: null,
-    isValid: true,
+    isInvalid: false,
   });
   const [itemToAdd, setItemToAdd] = useState({ id: null, title: '' });
   const [itemQuantityToAdd, setItemQuantityToAdd] = useState({
     value: '',
-    isValid: true,
+    isInvalid: false,
   });
   const [addedItems, setAddedItems] = useState([]);
   const token = useSelector(state => state.userData.token);
   const addItem = event => {
     if (!itemToAdd.id || addedItems.find(item => item.id === itemToAdd.id))
       return document.getElementById('selectItem').focus();
-    if (!itemQuantityToAdd.value || !itemQuantityToAdd.isValid)
+    if (!itemQuantityToAdd.value || itemQuantityToAdd.isInvalid)
       return document.getElementById('itemQuantityToAdd').focus();
     setAddedItems([
       ...addedItems,
@@ -49,7 +49,7 @@ const CreateGiftBoxModal = props => {
       },
     ]);
     setItemToAdd({ id: null, title: '' });
-    setItemQuantityToAdd({ value: '', isValid: true });
+    setItemQuantityToAdd({ value: '', isInvalid: false });
   };
   const removeItem = event => {
     const index = addedItems.findIndex(
@@ -72,22 +72,25 @@ const CreateGiftBoxModal = props => {
   const subtractQuantity = event => changeQuantity(event, -1);
   const createGiftBox = async event => {
     event.preventDefault();
-    if (!giftBoxTitle.isValid || !giftBoxTitle.value)
+    if (giftBoxTitle.isInvalid || !giftBoxTitle.value)
       return document.getElementById('giftBoxTitle').focus();
     if (!addedItems.length)
-      return document.getElementById('selectItem').focus();    
+      return document.getElementById('selectItem').focus();
     try {
-      const jsonResponse = await fetch('https://gift-campaign.herokuapp.com/createGiftBox', {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          giftBoxTitle: giftBoxTitle.value,
-          items: addedItems,
-        }),
-      });
+      const jsonResponse = await fetch(
+        'https://gift-campaign.herokuapp.com/createGiftBox',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            giftBoxTitle: giftBoxTitle.value,
+            items: addedItems,
+          }),
+        }
+      );
       const response = await jsonResponse.json();
       if (!jsonResponse.ok) throw new Error(response.message);
       props.fetchGiftBoxes();
@@ -106,20 +109,24 @@ const CreateGiftBoxModal = props => {
             variant="outlined"
             size="small"
             placeholder="Box title"
+            label="Box title"
+            helperText={
+              giftBoxTitle.isInvalid ? giftBoxTitle.isInvalid.message : null
+            }
             id="giftBoxTitle"
-            error={!giftBoxTitle.isValid}
+            error={giftBoxTitle.isInvalid}
             onBlur={event =>
               setGiftBoxTitle({
                 ...giftBoxTitle,
-                isValid: validationRules.title(event.target.value),
+                isInvalid: validationRules.title(event.target.value),
               })
             }
             onChange={event =>
               setGiftBoxTitle({
                 value: event.target.value,
-                isValid:
-                  giftBoxTitle.isValid ||
-                  validationRules.title(event.target.value),
+                isInvalid:
+                  validationRules.title(event.target.value) ||
+                  giftBoxTitle.isInvalid,
               })
             }
           />
@@ -147,17 +154,19 @@ const CreateGiftBoxModal = props => {
               size="small"
               value={itemQuantityToAdd.value}
               id="itemQuantityToAdd"
-              error={!itemQuantityToAdd.isValid}
+              error={itemQuantityToAdd.isInvalid}
               onBlur={event =>
                 setItemQuantityToAdd({
                   ...itemQuantityToAdd,
-                  isValid: validationRules.quantity(event.target.value),
+                  isInvalid: validationRules.quantity(event.target.value),
                 })
               }
               onChange={event =>
                 setItemQuantityToAdd({
                   value: event.target.value,
-                  isValid: itemQuantityToAdd.isValid || validationRules.quantity(event.target.value),
+                  isInvalid:
+                    validationRules.quantity(event.target.value) ||
+                    itemQuantityToAdd.isInvalid,
                 })
               }
               placeholder="pcs"

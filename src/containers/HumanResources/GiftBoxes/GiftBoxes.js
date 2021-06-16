@@ -16,11 +16,14 @@ const GiftBoxes = () => {
 
   const fetchGiftBoxes = async () => {
     try {
-      const jsonResponse = await fetch('https://gift-campaign.herokuapp.com/getGiftBoxes', {
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      });
+      const jsonResponse = await fetch(
+        'https://gift-campaign.herokuapp.com/getGiftBoxes',
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
       const response = await jsonResponse.json();
       if (!jsonResponse.ok) throw new Error(response.message);
       setGiftBoxes(response);
@@ -31,6 +34,7 @@ const GiftBoxes = () => {
   useEffect(() => {
     socket.on('giftBoxesChanged', () => fetchGiftBoxes());
     fetchGiftBoxes();
+    return socket.removeListener('giftBoxesChanged');
   }, [giftItems]);
 
   return (
